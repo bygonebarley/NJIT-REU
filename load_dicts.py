@@ -1,6 +1,8 @@
 import pandas as pd
 import pickle
 from datetime import datetime
+import numpy as np
+from scipy import stats
 
 def load_dicts(filename):
     # these lines create file objects for the different binary files containing the dictionaries
@@ -14,10 +16,15 @@ def load_dicts(filename):
     three = pickle.load(file_three)
     return one,two,three
 
+def load_float_diff(filename):
+    fm = open(filename+'_float_diff.pkl','rb')
+
+    return pickle.load(fm)
+
 if __name__ == '__main__':
     start = datetime.now()
 
-    filename = 'twosupermarket_test'
+    filename = 'testies'
 
     [all_time_dict,time_diff,last_time_shopping] = load_dicts(filename)
 

@@ -1,12 +1,16 @@
 import pandas as pd
 import pickle
 from datetime import datetime
+import sys
 
 if __name__ == '__main__':
 
     start = datetime.now()
 
-    filename = 'SD.pkl'
+    if (len(sys.argv) > 1):
+        filename = sys.argv[1]
+    else:
+        filename = 'AM.pkl'
 
     timestamp_to_datetime = lambda x : (datetime.strptime(x,'%Y-%m-%d %H:%M:%S.%f'))
     
@@ -16,15 +20,30 @@ if __name__ == '__main__':
     all_time_dict ={}
     time_diff = {}
     last_time_shopping = {}
-
-    ta = ""
+    transaction_numbers = {}
 
     for index, row in df.iterrows():
         CA = df['Customer Account'][index]
-        if (ta == row['Transaction Number']):
+        TN = row['Transaction Number']
+    
+        if TN in transaction_numbers:
+            transaction_numbers[TN][1].append(row['Date'])
+            if (transaction_numbers[TN][1][-1]-transaction_numbers[TN][1][0]).seconds > 60:
+                print(f"Longer than a minute - Transaction # {TN}")
+            all_time_dict[transaction_numbers[TN][0]][-1] = transaction_numbers[TN][1][int(len(transaction_numbers[TN][1])/2)]
             continue
         else:
-            ta = row['Transaction Number']
+            transaction_numbers[TN] = [CA,[row['Date']]]
+
+        '''
+        if CA in transaction_numbers:
+            if TN in transaction_numbers[CA]:
+                continue
+            else:
+                transaction_numbers[CA].append(TN)
+        else:
+            transaction_numbers[CA] = [TN]
+        '''
         #if (len(df['Date'][index]) < 10):
         #    continue
         if CA in all_time_dict:
@@ -43,7 +62,6 @@ if __name__ == '__main__':
 
 
 
-    #file_one = open(filename[0:-4]+
     file_one = open(filename[0:-4]+'_all_time.pkl','wb')
     file_two = open(filename[0:-4]+'_time_diff.pkl','wb')
     file_three = open(filename[0:-4]+'_last_time.pkl','wb')
