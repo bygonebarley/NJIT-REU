@@ -23,26 +23,27 @@ def main():
     first = keys[0]
     print(big_df)
     
-    total = transaction_total(all_dt,keys)
-    df['total'] = total
+    #total = transaction_total(all_dt,keys)
+    #df['total'] = total
     
-    monthly = transaction_monthly(all_dt,diff,keys)
-    df['monthly average'] = monthly
+    #monthly = transaction_monthly(all_dt,diff,keys)
+    #df['monthly average'] = monthly
     
-    min_times = min_time_between(diff,keys)
-    df['min'] = min_times
+    #min_times = min_time_between(diff,keys)
+    #df['min'] = min_times
 
-    total_prod = total_product(big_df,keys)
-    df['total product'] = total_prod
+    #total_prod = total_product(big_df,keys)
+    #df['total product'] = total_prod
 
-    avg_prod = average_product(total,total_prod)
-    df['average product'] = avg_prod
+    #avg_prod = average_product(total,total_prod)
+    #df['average product'] = avg_prod
 
-    min_prod,max_prod = min_max_product(big_df,keys)
-    df['minimum product'] = min_prod
-    df['maximum product'] = max_prod
+    #min_prod,max_prod = min_max_product(big_df,keys)
+    #df['minimum product'] = min_prod
+    #df['maximum product'] = max_prod
 
     print(df)
+    df.to_pickle(fm+'_churn.pkl')
 
 def transaction_total(all,keys):
     # this function will return the total number of transactions
